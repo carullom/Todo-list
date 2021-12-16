@@ -1,58 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React,{useRef}  from 'react';
+import { connect } from 'react-redux';
+import { addTodo } from './action';
 import './App.css';
 
-function App() {
+function App({addTodo, todos}) {
+
+
+
+  const todoEl = useRef('');
+  const manageClick = (e)=>{
+    e.preventDefault();
+    addTodo(todoEl.current.value)
+  }
+
+  
+
+ 
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div className="App container-fluid">
+      <div className='row d-flex justify-content-center text-center'>
+        <div className="class col-md-6">
+          <h1>My todolist app</h1>
+
+            <form action="">
+              <div className="class form-group">
+                <input ref={todoEl} type="text" name='todo' id='todo' className="class form-field" />
+                <button onClick={manageClick} className='btn btn-success m-1'>ADD</button>
+              </div>
+            </form>
+
+            <ul className='list-group list-group-flush'>
+              {
+                todos.map(todo => <li key={todo.name} className='list-group-item'>{todo.name}</li>)
+              }
+            </ul>
+        </div>
+      </div>
     </div>
   );
 }
-
-export default App;
+const matchStateToProps=(state)=>{
+ return {todos: [...state]}
+};
+const mapDispatchToProps=(dispatch)=>{
+  return {
+    addTodo:(name)=> dispatch(addTodo(name))
+  }
+};
+const createConnector = connect(matchStateToProps,mapDispatchToProps);  
+export default createConnector(App);

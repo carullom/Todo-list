@@ -1,9 +1,9 @@
 import React,{useRef}  from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from './action';
+import { addTodo, deleteTodo } from './action';
 import './App.css';
 
-function App({addTodo, todos}) {
+function App({addTodo, todos, deleteTodo}) {
 
 
 
@@ -32,7 +32,8 @@ function App({addTodo, todos}) {
 
             <ul className='list-group list-group-flush'>
               {
-                todos.map(todo => <li key={todo.name} className='list-group-item'>{todo.name}</li>)
+                todos.map(todo => <li key={todo.name} className='list-group-item'>{todo.name}
+                <button onClick={()=>deleteTodo(todo)} className='btn btn-danger btn-sm mx-2'>Delete</button></li>)
               }
             </ul>
         </div>
@@ -45,7 +46,8 @@ const matchStateToProps=(state)=>{
 };
 const mapDispatchToProps=(dispatch)=>{
   return {
-    addTodo:(name)=> dispatch(addTodo(name))
+    addTodo:(name)=> dispatch(addTodo(name)),
+    deleteTodo: todo => dispatch(deleteTodo(todo))
   }
 };
 const createConnector = connect(matchStateToProps,mapDispatchToProps);  

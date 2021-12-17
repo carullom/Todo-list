@@ -21,8 +21,11 @@ const initTodos =[
 const reducer = (state, action) =>{
     switch(action.type){
         case 'ADD_TODO':
-    
-    return [action.payload, ...state];
+          return [action.payload, ...state];
+
+        case 'REMOVE_TODO':
+          return state.filter(t=>t.name!==action.payload.name) //ritorneremo tutti i todo diversi da quello selezionato
+        
         default:
             return state;
     }   
